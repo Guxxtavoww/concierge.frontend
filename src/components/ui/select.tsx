@@ -71,8 +71,10 @@ const SelectScrollDownButton = forwardRef<
 SelectScrollDownButton.displayName =
   SelectPrimitive.ScrollDownButton.displayName;
 
+export type SelectContentRef = ElementRef<typeof SelectPrimitive.Content>;
+
 const SelectContent = forwardRef<
-  ElementRef<typeof SelectPrimitive.Content>,
+  SelectContentRef,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
 >(({ className, children, position = 'popper', ...props }, ref) => (
   <SelectPrimitive.Portal>
