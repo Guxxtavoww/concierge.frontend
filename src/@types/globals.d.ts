@@ -1,5 +1,7 @@
-import type { Locale } from '@/config/i18n.config';
 import type { ReactNode, Dispatch, SetStateAction } from 'react';
+
+import type { EnvType } from '@/config/env.config';
+import type { Locale } from '@/config/i18n.config';
 
 declare global {
   /**
@@ -24,7 +26,7 @@ declare global {
   /**
    * Type for an object with string keys and values that are either strings or undefined.
    */
-  type MyRecord = Record<string, string | undefined>;
+  type ServerComponentRecord = Record<string, string | undefined>;
 
   /**
    * Type for the state setter function returned by the `useState` hook.
@@ -38,8 +40,8 @@ declare global {
    * @template SearchParamsType - The type of search parameters.
    */
   export type ServerComponentPageProps<
-    ParamsType extends MyRecord = MyRecord,
-    SearchParamsType extends MyRecord = MyRecord
+    ParamsType extends ServerComponentRecord = ServerComponentRecord,
+    SearchParamsType extends ServerComponentRecord = ServerComponentRecord
   > = {
     params: ParamsType & { locale: Locale };
     searchParams: SearchParamsType;
@@ -129,4 +131,8 @@ declare global {
           `${Key}`
       : // Return nothing.
         never;
+
+  namespace NodeJS {
+    export interface ProcessEnv extends Omit<EnvType, 'NEXT_PUBLIC_WS_URL'> {}
+  }
 }

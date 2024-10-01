@@ -24,13 +24,46 @@ export const emailStringSchema = stringSchema.email();
 export const urlStringSchema = stringSchema.url();
 export const uuidSchema = stringSchema.uuid();
 export const orderParamSchema = z.enum(['ASC', 'DESC']);
+export const genderStringSchema = z.enum(['M', 'F']);
 export const integerNumberSchema = numberSchema.int();
-export const floatNumberSchema = numberSchema.refine((val) => val % 1 !== 0, {
-  message: 'Value must be float',
-});
+export const floatNumberSchema = numberSchema
+  .refine((val) => !(val % 1 !== 0 || /\.\d+/.test(val.toString())), {
+    message: 'Value must be float',
+  })
+  .transform((value) => parseFloat(String(value)));
+
+export const booleanSchema = z.boolean();
 
 export const stringToNumberSchema = stringSchema
   .refine((value) => !Number.isNaN(+value))
+  .transform(Number);
+
+export const stringToIntegerSchema = stringSchema
+  .refine(
+    (str) => {
+      const numberfyedValue = Number(str);
+
+      if (Number.isNaN(numberfyedValue)) return false;
+
+      return Number.isInteger(numberfyedValue);
+    },
+    { message: 'Value must be int' }
+  )
+  .transform(Number);
+
+export const stringToFloatSchema = stringSchema
+  .refine(
+    (str) => {
+      const numberfyedValue = Number(str);
+
+      if (Number.isNaN(numberfyedValue)) return false;
+
+      return !(
+        numberfyedValue % 1 !== 0 || /\.\d+/.test(numberfyedValue.toString())
+      );
+    },
+    { message: 'Value must be float' }
+  )
   .transform(Number);
 
 export const paginationParamSchema = z
@@ -42,33 +75,30 @@ export const booleanStringSchema = z
   .enum(['true', 'false'])
   .transform((value) => value === 'true');
 
-export const phoneNumberStringSchema = stringSchema.refine(
-  (data) => {
-    const phoneNumberRegex =
-      /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+export const cpfStringSchema = stringSchema.regex(
+  /^\d{3}\.\d{3}\.\d{3}-\d{2}$/
+);
 
-    return phoneNumberRegex.test(data);
-  },
-  {
-    message: 'Invalid phone number format',
-  }
+export const phoneNumberStringSchema = stringSchema.regex(
+  /^\(\d{2}\) \d{5}-\d{4}$/
 );
 
 export const timeStringSchema = stringSchema.time({ precision: 3 });
 
-export const datetimeStringSchema = stringSchema
-  .datetime()
-  .transform((value) => new Date(value));
+export const datetimeStringSchema = stringSchema.datetime();
 
-export const dateStringSchema = stringSchema
-  .date()
-  .transform((value) => new Date(value));
+export const dateStringSchema = stringSchema.date();
 
-export const endDateStringSchema = dateStringSchema.transform((endDate) => {
-  endDate.setDate(endDate.getDate() + 1);
+export const futureDatetimeSchema = datetimeStringSchema.refine(
+  (datetime) => {
+    const datefyedValue = new Date(datetime);
+    const currentDate = new Date();
 
-  return endDate;
-});
+    // Verifica se a data inserida é posterior à data atual
+    return datefyedValue > currentDate;
+  },
+  { message: 'The date must be in the future' }
+);
 
 /**
  * -----------------------------------------------------------------------------
@@ -80,8 +110,14 @@ export const optionalEmailStringSchema =
 
 export const optionalStringSchema = createNullableTransform(stringSchema);
 
+export const optionalCpfStringSchema = createNullableTransform(cpfStringSchema);
+
 export const optionalStringToNumberSchema =
   createNullableTransform(stringToNumberSchema);
+
+export const optionalStringSchemaToLowerCase = optionalStringSchema.transform(
+  (val) => val?.toLocaleLowerCase()
+);
 
 export const optionalPhoneNumberStringSchema = createNullableTransform(
   phoneNumberStringSchema
@@ -107,8 +143,8 @@ export const optionalTimeStringSchema =
 export const optionalDatetimeStringSchema =
   createNullableTransform(datetimeStringSchema);
 
-export const optionalEndDateStringSchema =
-  createNullableTransform(endDateStringSchema);
+export const optionalFutureDatetimeSchema =
+  createNullableTransform(futureDatetimeSchema);
 
 export const optionalDateStringSchema =
   createNullableTransform(dateStringSchema);
@@ -116,5 +152,19 @@ export const optionalDateStringSchema =
 export const optionalBooleanStringSchema =
   createNullableTransform(booleanStringSchema);
 
+export const optionalBooleanSchema = createNullableTransform(booleanSchema);
+
 export const optionalOrderParamSchema =
   createNullableTransform(orderParamSchema);
+
+export type OrderBy = z.infer<typeof optionalOrderParamSchema>;
+
+export const optionalGenderStringSchema =
+  createNullableTransform(genderStringSchema);
+
+export const optionalStringToFloatSchema =
+  createNullableTransform(stringToFloatSchema);
+
+export const optionalStringToIntegerSchema = createNullableTransform(
+  stringToIntegerSchema
+);

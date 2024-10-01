@@ -9,5 +9,9 @@
     "title": "Rota Inválida",
     "description": "Não achamos essa rota!",
     "button_text": "Vá para uma rota válida aqui."
+  },
+  "error_page_texts": {
+    "title": "Ops! Ocorreu um erro inesperado!",
+    "reset_button_text": "Tente Novamente"
   }
 }

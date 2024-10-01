@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 
 import { Providers } from '@/providers';
+import { parseEnv } from '@/config/env.config';
 import { Toaster } from '@/components/ui/toaster';
 import { i18nConfig } from '@/config/i18n.config';
 
@@ -10,9 +11,9 @@ import '../styles/global.styles.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'An App',
+  title: 'Concierge',
   description: 'An App description',
-  keywords: ['keyword1'],
+  keywords: ['condomínio', 'prédios', 'festas', 'eventos'],
   authors: [
     {
       name: 'Gustavo',
@@ -37,6 +38,8 @@ export default async function RootLayout({
   children,
   params,
 }: WithChildren<ServerComponentPageProps>) {
+  await parseEnv();
+
   return (
     <html lang={params.locale} suppressHydrationWarning>
       <body className={inter.className}>

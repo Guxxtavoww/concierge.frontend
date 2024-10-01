@@ -4,7 +4,7 @@ import { withHydrationOverlay } from '@builder.io/react-hydration-overlay/next';
 const nextConfig = {};
 
 // Check if the environment is development
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = process.env.NEXT_PUBLIC_ENV === 'dev';
 
 // Apply the hydration overlay only in development mode
 const config = isDev
