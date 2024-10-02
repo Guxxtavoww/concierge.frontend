@@ -38,7 +38,7 @@ export default async function RootLayout({
   children,
   params,
 }: WithChildren<ServerComponentPageProps>) {
-  await parseEnv();
+  parseEnv();
 
   return (
     <html lang={params.locale} suppressHydrationWarning>

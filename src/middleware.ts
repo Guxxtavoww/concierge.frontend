@@ -3,12 +3,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { type Locale, i18nConfig } from './config/i18n.config';
 import { getMatchingLocale } from './lib/i18n/functions/get-matching-locale.lib';
 
-const routesToIgnore = ['/_next/', '/api/'];
+const routesToIgnore = ['/_next/', '/api/', '/favicon.ico', '/robots.txt'];
 
 export default function middleware(request: NextRequest) {
   const nextUrlPathName = request.nextUrl.pathname;
 
-  if (routesToIgnore.includes(nextUrlPathName)) return NextResponse.next();
+  if (routesToIgnore.some((route) => nextUrlPathName.startsWith(route))) {
+    return NextResponse.next();
+  }
 
   // Loop through available locales in i18n config, set to true when
   // iterated locale is not found in current request url.
