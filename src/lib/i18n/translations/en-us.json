@@ -3,7 +3,8 @@
     "submit": "Submit",
     "greet": "Welcome to the home page!",
     "client_component": "This is a client-component",
-    "change_lang": "Choose a language"
+    "change_lang": "Choose a language",
+    "empty_list_message": "No results."
   },
   "not_found_page_texts": {
     "title": "Invalid route",
@@ -13,5 +14,10 @@
   "error_page_texts": {
     "title": "Something went wrong!",
     "reset_button_text": "Try again"
+  },
+  "form_fields_default_texts": {
+    "select_field_placeholder": "Select",
+    "filter_text_input_placeholder": "Filter Options...",
+    "date_input_placeholder": "Pick a date"
   }
 }

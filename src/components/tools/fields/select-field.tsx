@@ -31,6 +31,7 @@ export interface SelectFieldProps<
   selectLabel?: string;
   placeholder?: string;
   className?: string;
+  autoFocus?: boolean;
 }
 
 export function SelectField<T extends Record<string, any>>({
@@ -43,6 +44,7 @@ export function SelectField<T extends Record<string, any>>({
   selectLabel,
   placeholder,
   className,
+  autoFocus,
 }: SelectFieldProps<T>) {
   const { control } = useFormContext();
   const optionsContainerRef = useRef<SelectContentRef>(null);
@@ -52,7 +54,8 @@ export function SelectField<T extends Record<string, any>>({
   const virtualizer = useVirtualizer({
     count,
     getScrollElement: () => optionsContainerRef.current,
-    estimateSize: () => 12,
+    estimateSize: () => 40,
+    overscan: 5,
   });
 
   const virtualItems = virtualizer.getVirtualItems();
@@ -73,7 +76,7 @@ export function SelectField<T extends Record<string, any>>({
             name={field.name}
           >
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger autoFocus={autoFocus}>
                 <SelectValue placeholder={placeholder || 'Selecione'} />
               </SelectTrigger>
             </FormControl>
@@ -94,7 +97,6 @@ export function SelectField<T extends Record<string, any>>({
                     <SelectItem
                       value={String(option[valueAccessor])}
                       key={virtualItem.index}
-                      className="cursor-pointer"
                       style={{
                         position: 'absolute',
                         top: virtualItem.start, // Position each item according to the virtualizer

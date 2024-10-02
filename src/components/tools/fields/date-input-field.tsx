@@ -19,6 +19,7 @@ import {
 import { cn } from '@/utils/cn.util';
 import { Button } from '@/components/ui/button';
 import { type Formats, formatToDate } from '@/utils/date.utils';
+import { useTranslations } from '@/contexts/translations.context';
 import { Calendar, type CalendarProps } from '@/components/ui/calendar';
 
 export interface DateInputFieldProps {
@@ -47,6 +48,7 @@ export function DateInputField({
   dateFormat = 'datetime-without-sub-values',
 }: DateInputFieldProps): JSX.Element {
   const { control } = useFormContext();
+  const { translation } = useTranslations();
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   return (
@@ -78,7 +80,11 @@ export function DateInputField({
                   {field.value ? (
                     formatToDate(field.value, dateFormat)
                   ) : (
-                    <span>Escolha uma data</span>
+                    <span>
+                      {translation(
+                        'form_fields_default_texts.date_input_placeholder'
+                      )}
+                    </span>
                   )}
                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </Button>

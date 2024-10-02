@@ -3,7 +3,8 @@
     "submit": "Enviar",
     "greet": "Bem vindo(a) a página principal do app",
     "client_component": "Isso é um client-component",
-    "change_lang": "Escolha a linguagem"
+    "change_lang": "Escolha a linguagem",
+    "empty_list_message": "Não há resultados."
   },
   "not_found_page_texts": {
     "title": "Rota Inválida",
@@ -13,5 +14,10 @@
   "error_page_texts": {
     "title": "Ops! Ocorreu um erro inesperado!",
     "reset_button_text": "Tente Novamente"
+  },
+  "form_fields_default_texts": {
+    "select_field_placeholder": "Selecionar...",
+    "filter_text_input_placeholder": "Filtrar Opções...",
+    "date_input_placeholder": "Escolha uma data"
   }
 }

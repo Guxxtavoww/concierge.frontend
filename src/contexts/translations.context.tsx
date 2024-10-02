@@ -5,13 +5,12 @@ import { useRouter, usePathname } from 'next/navigation';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
 import type { Locale } from '@/config/i18n.config';
-import { Skeleton } from '@/components/ui/skeleton';
 import { getTranslation } from '@/lib/i18n/functions/get-translation.lib';
 import type { Translation } from '@/lib/i18n/functions/load-translation.lib';
 
 interface TranslationContextProps {
   // eslint-disable-next-line no-unused-vars
-  translation: (key: ObjectKeys<Translation>) => string | JSX.Element;
+  translation: (key: ObjectKeys<Translation>) => string;
   // eslint-disable-next-line no-unused-vars
   changeTranslation: (lang: Locale) => void;
   isLoading: boolean;
@@ -39,13 +38,8 @@ export function TranslationProvider({ children }: WithChildren) {
   });
 
   const translation = useCallback(
-    (key: ObjectKeys<Translation>) =>
-      isLoading ? (
-        <Skeleton className="h-3 w-full max-w-8 inline" />
-      ) : (
-        String(getTranslationFn?.(key))
-      ),
-    [getTranslationFn, isLoading]
+    (key: ObjectKeys<Translation>) => String(getTranslationFn?.(key)),
+    [getTranslationFn]
   );
 
   const changeTranslation = useCallback(
