@@ -8,9 +8,11 @@ import type { Locale } from '@/config/i18n.config';
 import { getTranslation } from '@/lib/i18n/functions/get-translation.lib';
 import type { Translation } from '@/lib/i18n/functions/load-translation.lib';
 
+export type TranslationFunction = (key: ObjectKeys<Translation>) => string;
+
 interface TranslationContextProps {
   // eslint-disable-next-line no-unused-vars
-  translation: (key: ObjectKeys<Translation>) => string;
+  translation: TranslationFunction;
   // eslint-disable-next-line no-unused-vars
   changeTranslation: (lang: Locale) => void;
   isLoading: boolean;
