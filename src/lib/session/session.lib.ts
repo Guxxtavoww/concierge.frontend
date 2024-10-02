@@ -2,25 +2,30 @@
 
 import { redirect } from 'next/navigation';
 
-import { getCookie, removeCookie } from '@/server/helpers/cookie.helpers';
+import {
+  removeAllCookies,
+  getMultipleCookies,
+} from '@/server/helpers/cookie.helpers';
 import { type UserType, userSchema } from '@/server/actions/auth/auth.types';
 
 export async function session<
   ForceNoUndefined extends boolean = false
 >(): Promise<{
   access_token: string | undefined;
+  refresh_token: string | undefined;
   user: ForceNoUndefined extends false ? UserType | undefined : UserType;
 }> {
-  const [user, access_token] = await Promise.all([
-    getCookie('user'),
-    getCookie('access_token'),
+  const { access_token, refresh_token, user } = await getMultipleCookies([
+    'refresh_token',
+    'access_token',
+    'user',
   ]);
 
   const userResponse = user
     ? userSchema.safeParse(JSON.parse(user))
     : undefined;
 
-  const baseAuthObject = { access_token };
+  const baseAuthObject = { access_token, refresh_token };
 
   const result = userResponse?.success
     ? {
@@ -36,7 +41,7 @@ export async function session<
 }
 
 export async function logOut() {
-  await Promise.all([removeCookie('user'), removeCookie('access_token')]);
+  await removeAllCookies();
 
   redirect('/auth/login');
 }

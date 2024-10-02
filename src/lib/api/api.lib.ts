@@ -1,7 +1,7 @@
 import 'server-only';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
-import { session } from '../session/session.lib';
+import { logOut, session } from '../session/session.lib';
 import { ENV_VARIABLES } from '../../config/env.config';
 
 const api = axios.create({
@@ -33,5 +33,21 @@ api.interceptors.request.use(async (req) => {
 
   return Promise.resolve(req);
 });
+
+api.interceptors.response.use(
+  (res) => res,
+  async (err: AxiosError) => {
+    if (err.status === 401) {
+      cache.access_token = undefined;
+      cache.refresh_token = undefined;
+
+      await logOut();
+    }
+
+    const message = String((err.response?.data as any)?.message || 'Error');
+
+    throw new Error(message);
+  }
+);
 
 export { api };
