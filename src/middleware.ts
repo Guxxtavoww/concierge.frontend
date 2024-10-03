@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { session } from './lib/session/session.lib';
 import { type Locale, i18nConfig } from './config/i18n.config';
 import { getMatchingLocale } from './lib/i18n/functions/get-matching-locale.lib';
 
+const protectedRoutes = ['/'];
 const routesToIgnore = ['/_next/', '/api/', '/favicon.ico', '/robots.txt'];
 
-export default function middleware(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   const nextUrlPathName = request.nextUrl.pathname;
 
   if (routesToIgnore.some((route) => nextUrlPathName.startsWith(route))) {
@@ -20,13 +22,25 @@ export default function middleware(request: NextRequest) {
       nextUrlPathName !== `/${locale}`
   );
 
+  const newLocale: Locale = getMatchingLocale(request);
+
   // Locale not found in request url, redirect to matched locale url.
   if (localeNotFound) {
-    const newLocale: Locale = getMatchingLocale(request);
-
     // Return new url redirect and redirect user to correct locale url.
     return NextResponse.redirect(
       new URL(`/${newLocale}/${nextUrlPathName}`, request.url)
     );
   }
+
+  if (protectedRoutes.includes(nextUrlPathName)) {
+    const { access_token, user } = await session();
+
+    if (!access_token || !user) {
+      return NextResponse.redirect(
+        new URL(`/${newLocale}/auth/login`, request.url)
+      );
+    }
+  }
+
+  return NextResponse.next();
 }

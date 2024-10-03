@@ -92,54 +92,52 @@ function VirtualList<T extends Extends>({
         )}
       />
       {filteredOptions.length > 0 ? ( // Check if options have elements before rendering
-        <>
-          <CommandGroup
-            ref={optionsContainerRef}
+        <CommandGroup
+          ref={optionsContainerRef}
+          style={{
+            height: '400px',
+            width: '100%',
+            overflow: 'auto',
+          }}
+        >
+          <div
             style={{
-              height: '400px',
+              height: `${virtualizer.getTotalSize()}px`,
               width: '100%',
-              overflow: 'auto',
+              position: 'relative',
             }}
           >
-            <div
-              style={{
-                height: `${virtualizer.getTotalSize()}px`,
-                width: '100%',
-                position: 'relative',
-              }}
-            >
-              {virtualOptions?.map((virtualOption) => {
-                const option = filteredOptions[virtualOption.index];
+            {virtualOptions?.map((virtualOption) => {
+              const option = filteredOptions[virtualOption.index];
 
-                if (!option) return null;
+              if (!option) return null;
 
-                const label = option[labelAccessor];
-                const value = option[valueAccessor];
+              const label = option[labelAccessor];
+              const value = option[valueAccessor];
 
-                return (
-                  <CommandItem
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: `${virtualOption.size}px`,
-                      transform: `translateY(${virtualOption.start}px)`,
-                    }}
-                    key={value}
-                    value={value}
-                    onSelect={onSelectOption}
-                  >
-                    {currentValue === value ? (
-                      <Check className="mr-2 h-4 w-4" />
-                    ) : null}
-                    {label}
-                  </CommandItem>
-                );
-              })}
-            </div>
-          </CommandGroup>
-        </>
+              return (
+                <CommandItem
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: `${virtualOption.size}px`,
+                    transform: `translateY(${virtualOption.start}px)`,
+                  }}
+                  key={value}
+                  value={value}
+                  onSelect={onSelectOption}
+                >
+                  {currentValue === value ? (
+                    <Check className="mr-2 h-4 w-4" />
+                  ) : null}
+                  {label}
+                </CommandItem>
+              );
+            })}
+          </div>
+        </CommandGroup>
       ) : (
         <CommandEmpty>
           {translation('common_texts.empty_list_message')}
