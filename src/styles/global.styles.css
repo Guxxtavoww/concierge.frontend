@@ -78,6 +78,14 @@
   img {
     @apply select-none block;
   }
+
+  form.auth-form {
+    @apply w-full space-y-5 *:w-full;
+  }
+
+  form.auth-form h2 {
+    @apply text-3xl;
+  }
 }
 
 .rdp-vhidden {

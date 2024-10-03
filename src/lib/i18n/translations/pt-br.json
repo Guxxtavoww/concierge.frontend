@@ -19,5 +19,28 @@
     "select_field_placeholder": "Selecionar...",
     "filter_text_input_placeholder": "Filtrar Opções...",
     "date_input_placeholder": "Escolha uma data"
+  },
+  "auth": {
+    "common": {
+      "user_email_placeholder": "Insira seu e-mail",
+      "user_email_label": "E-mail",
+      "password_label": "Senha",
+      "password_placeholder": "Insira sua senha"
+    },
+    "login_page": {
+      "title": "Faça seu login",
+      "submit_button_text": "Login"
+    },
+    "register_page": {
+      "title": "Faça seu cadastro aqui",
+      "date_of_birth_label": "Data de nascimento",
+      "phone_number_label": "Número de celular",
+      "phone_number_placeholder": "Insira seu número de celular",
+      "confirm_password_label": "Confirme sua Senha",
+      "confirm_password_placeholder": "Repita a senha",
+      "submit_button_text": "Cadastrar",
+      "user_name_placeholder": "Insira seu nome de usuário",
+      "user_name_label": "Nome de usuário"
+    }
   }
 }

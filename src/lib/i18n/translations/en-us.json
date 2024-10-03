@@ -19,5 +19,28 @@
     "select_field_placeholder": "Select",
     "filter_text_input_placeholder": "Filter Options...",
     "date_input_placeholder": "Pick a date"
+  },
+  "auth": {
+    "common": {
+      "user_email_placeholder": "Enter your email",
+      "user_email_label": "Email",
+      "password_label": "Password",
+      "password_placeholder": "Enter your password"
+    },
+    "login_page": {
+      "title": "Log in",
+      "submit_button_text": "Login"
+    },
+    "register_page": {
+      "title": "Sign up here",
+      "date_of_birth_label": "Date of birth",
+      "phone_number_label": "Phone number",
+      "phone_number_placeholder": "Enter your phone number",
+      "confirm_password_label": "Confirm your password",
+      "confirm_password_placeholder": "Repeat the password",
+      "submit_button_text": "Sign up",
+      "user_name_placeholder": "Enter your user name",
+      "user_name_label": "User Name"
+    }
   }
 }

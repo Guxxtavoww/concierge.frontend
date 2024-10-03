@@ -67,6 +67,7 @@ export function useMutationWithToast<
   TContext
 >): UseBaseMutationResult<TData, TError, TVariables, TContext> & {
   isRetryAttemptsExceeded: boolean;
+  disabled: boolean;
 } {
   const { toast } = useToast();
   const retriesCountRef = useRef(0);
@@ -124,8 +125,11 @@ export function useMutationWithToast<
     },
   });
 
+  const isRetryAttemptsExceeded = retriesCountRef.current >= retryLimit;
+
   return {
     ...mutationResult,
-    isRetryAttemptsExceeded: retriesCountRef.current >= retryLimit,
+    isRetryAttemptsExceeded,
+    disabled: isRetryAttemptsExceeded || mutationResult.isPending,
   };
 }

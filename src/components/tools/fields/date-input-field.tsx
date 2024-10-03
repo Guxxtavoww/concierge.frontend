@@ -95,7 +95,7 @@ export function DateInputField({
                 mode="single"
                 selected={field.value}
                 onSelect={(date) => {
-                  field.onChange(date);
+                  field.onChange(date?.toLocaleDateString());
                   setIsCalendarOpen(false);
                 }}
                 disabled={disableCalendarFn}
