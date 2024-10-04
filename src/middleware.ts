@@ -14,9 +14,6 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Identificar o locale baseado no request
-  const newLocale: Locale = getMatchingLocale(request);
-
   // Checar se o locale está ausente na URL
   const localeNotFound = i18nConfig.locales.every(
     (locale) =>
@@ -26,30 +23,34 @@ export default async function middleware(request: NextRequest) {
 
   // Se o locale não estiver na URL, redireciona para a URL com o locale correto
   if (localeNotFound) {
+    const newLocale = getMatchingLocale(request);
+
     return NextResponse.redirect(
       new URL(`/${newLocale}${nextUrlPathName}`, request.url)
     );
-  }
+  } else {
+    const currentLocale = nextUrlPathName.split('/')[1] as Locale;
 
-  const pathnameWithoutLocale =
-    nextUrlPathName.split(newLocale)[1] || protectedRoutes[0];
+    const pathnameWithoutLocale =
+      nextUrlPathName.split(currentLocale)[1] || protectedRoutes[0];
 
-  // Agora que o locale está garantido na URL, verifique se a rota é protegida
-  const isProtectedRoute = protectedRoutes.some(
-    (protectedRoute) =>
-      pathnameWithoutLocale === protectedRoute ||
-      pathnameWithoutLocale === `${protectedRoute}/`
-  );
+    // Agora que o locale está garantido na URL, verifique se a rota é protegida
+    const isProtectedRoute = protectedRoutes.some(
+      (protectedRoute) =>
+        pathnameWithoutLocale === protectedRoute ||
+        pathnameWithoutLocale === `${protectedRoute}/`
+    );
 
-  // Se for uma rota protegida, verificar a sessão
-  if (isProtectedRoute) {
-    const { access_token, user } = await session();
+    // Se for uma rota protegida, verificar a sessão
+    if (isProtectedRoute) {
+      const { access_token, user } = await session();
 
-    // Se não houver sessão, redirecionar para a página de login com o locale correto
-    if (!access_token || !user) {
-      return NextResponse.redirect(
-        new URL(`/${newLocale}/auth/login`, request.url)
-      );
+      // Se não houver sessão, redirecionar para a página de login com o locale correto
+      if (!access_token || !user) {
+        return NextResponse.redirect(
+          new URL(`/${currentLocale}/auth/login`, request.url)
+        );
+      }
     }
   }
 

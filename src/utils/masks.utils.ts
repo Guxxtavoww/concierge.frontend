@@ -1,13 +1,16 @@
-export function phoneMask(value: string) {
-  // Remove any non-numeric characters
-  const numbers = value.replace(/\D/g, '');
+export function phoneNumberMask(value: string): string {
+  return value
+    .replace(/\D/g, '')
+    .replace(/(\d{2})(\d)/, '($1) $2')
+    .replace(/(\d{5})(\d)/, '$1-$2')
+    .replace(/(-\d{4})\d+?$/, '$1');
+}
 
-  // Format the phone number with parentheses, spaces, and a hyphen
-  const formatted = numbers.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
-
-  // If the formatted value is shorter than the original and the original has content, return undefined (no mask applied)
-  if (formatted.length < value.length && value.length) return undefined;
-
-  // Otherwise, return the formatted value
-  return formatted;
+export function cpfNumberMask(value: string): string {
+  return value
+    .replace(/\D/g, '')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+    .replace(/(-\d{2})\d+?$/, '$1');
 }

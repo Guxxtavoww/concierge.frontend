@@ -2,12 +2,13 @@
 
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
-import { phoneMask } from '@/utils/masks.utils';
 import { Loader } from '@/components/tools/loader';
+import { phoneNumberMask } from '@/utils/masks.utils';
 import { useTranslations } from '@/contexts/translations.context';
 import { InputField } from '@/components/tools/fields/input-field';
 import { useFormWithSchema } from '@/hooks/use-form-with-schema.hook';
 import { useMutationWithToast } from '@/hooks/use-mutation-with-toast.hook';
+import { DateInputField } from '@/components/tools/fields/date-input-field';
 import { loginOrRegister } from '@/server/actions/auth/login-or-register.action';
 import { InputFieldWithMask } from '@/components/tools/fields/input-field-with-mask';
 
@@ -15,7 +16,6 @@ import {
   registerSchema,
   type RegisterPayload,
 } from '../_schemas/register.schema';
-import { DateInputField } from '@/components/tools/fields/date-input-field';
 
 export default function RegisterPage() {
   const { translation } = useTranslations();
@@ -51,7 +51,7 @@ export default function RegisterPage() {
         />
         <InputFieldWithMask
           name="phone_number"
-          maskFn={phoneMask}
+          maskFn={phoneNumberMask}
           label={translation('auth.register_page.phone_number_label')}
           placeholder={translation(
             'auth.register_page.phone_number_placeholder'
@@ -60,6 +60,12 @@ export default function RegisterPage() {
         <DateInputField
           name="date_of_birth"
           label={translation('auth.register_page.date_of_birth_label')}
+          disableCalendarFn={(date) => date > new Date()}
+          calendarProps={{
+            captionLayout: 'dropdown-buttons',
+            fromYear: new Date().getFullYear() - 122,
+            toYear: new Date().getFullYear(),
+          }}
         />
         <InputField
           name="password"
