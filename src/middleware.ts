@@ -32,7 +32,7 @@ export default async function middleware(request: NextRequest) {
     const currentLocale = nextUrlPathName.split('/')[1] as Locale;
 
     const pathnameWithoutLocale =
-      nextUrlPathName.split(currentLocale)[1] || protectedRoutes[0];
+      nextUrlPathName.replace(`/${currentLocale}`, '') || protectedRoutes[0];
 
     // Agora que o locale está garantido na URL, verifique se a rota é protegida
     const isProtectedRoute = protectedRoutes.some(
