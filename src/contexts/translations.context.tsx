@@ -8,6 +8,9 @@ import type { Locale } from '@/config/i18n.config';
 import { getTranslation } from '@/lib/i18n/functions/get-translation.lib';
 import type { Translation } from '@/lib/i18n/functions/load-translation.lib';
 
+import { Loader } from '@/components/tools/loader';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+
 export type TranslationFunction = (key: ObjectKeys<Translation>) => string;
 
 interface TranslationContextProps {
@@ -30,7 +33,7 @@ export function TranslationProvider({ children }: WithChildren) {
     [pathname]
   );
 
-  const { data: getTranslationFn, isLoading } = useQuery({
+  const { data: getTranslationFn, isLoading = true } = useQuery({
     queryKey: ['get-translation', currentLocale],
     queryFn: async () => getTranslation(currentLocale),
     refetchOnMount: false,
@@ -62,6 +65,11 @@ export function TranslationProvider({ children }: WithChildren) {
         currentLocale,
       }}
     >
+      <Dialog open={isLoading}>
+        <DialogContent className="min-w-full min-h-svh flex justify-center items-center" hideCloseButton>
+          <Loader size="xl" />
+        </DialogContent>
+      </Dialog>
       {children}
     </TranslationContext.Provider>
   );

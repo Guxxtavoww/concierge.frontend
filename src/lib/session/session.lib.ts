@@ -25,19 +25,11 @@ export async function session<
     ? userSchema.safeParse(JSON.parse(user))
     : undefined;
 
-  const baseAuthObject = { access_token, refresh_token };
-
-  const result = userResponse?.success
-    ? {
-        ...baseAuthObject,
-        user: userResponse.data,
-      }
-    : {
-        ...baseAuthObject,
-        user: undefined,
-      };
-
-  return result as any;
+  return {
+    access_token,
+    refresh_token,
+    user: userResponse?.success ? userResponse.data : undefined,
+  } as any;
 }
 
 export async function logOut() {

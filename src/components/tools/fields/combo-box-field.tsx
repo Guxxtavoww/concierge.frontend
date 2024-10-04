@@ -13,21 +13,21 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import {
-  type TranslationFunction,
-  useTranslations,
-} from '@/contexts/translations.context';
-import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
 } from '@/components/ui/command';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import {
+  useTranslations,
+  type TranslationFunction,
+} from '@/contexts/translations.context';
 import { Button } from '@/components/ui/button';
 
 import type { SelectFieldProps } from './select-field';

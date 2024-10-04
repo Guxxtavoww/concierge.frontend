@@ -6,7 +6,7 @@ import {
   type UseMutationOptions,
   type UseBaseMutationResult,
 } from '@tanstack/react-query';
-import { useRef, type ReactNode } from 'react';
+import { useMemo, useRef, type ReactNode } from 'react';
 
 import { ToastAction, type ToastActionElement } from '@/components/ui/toast';
 
@@ -125,11 +125,19 @@ export function useMutationWithToast<
     },
   });
 
-  const isRetryAttemptsExceeded = retriesCountRef.current >= retryLimit;
+  const isRetryAttemptsExceeded = useMemo(
+    () => retriesCountRef.current === retryLimit,
+    [retryLimit]
+  );
+
+  const disabled = useMemo(
+    () => isRetryAttemptsExceeded || mutationResult.isPending,
+    [isRetryAttemptsExceeded, mutationResult.isPending]
+  );
 
   return {
     ...mutationResult,
     isRetryAttemptsExceeded,
-    disabled: isRetryAttemptsExceeded || mutationResult.isPending,
+    disabled,
   };
 }

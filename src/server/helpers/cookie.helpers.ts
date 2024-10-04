@@ -67,14 +67,14 @@ export async function setMultipleCookies(
   );
 }
 
-export async function setUserCookie(payload: UserType, accessToken?: string) {
+export async function setUserCookie(payload: UserType, refresh_token?: string) {
   const cookiesFn = cookies();
 
-  const access_token = accessToken || cookiesFn.get('access_token')?.value;
+  const refreshToken = refresh_token || cookiesFn.get('refresh_token')?.value;
 
-  if (!access_token) return;
+  if (!refreshToken) return;
 
-  const expires = getExpirationDateFromToken(access_token);
+  const expires = getExpirationDateFromToken(refreshToken);
 
   return cookiesFn.set('user', JSON.stringify(payload), {
     expires,

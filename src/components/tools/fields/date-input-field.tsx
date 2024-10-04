@@ -48,7 +48,7 @@ export function DateInputField({
   dateFormat = 'datetime-without-sub-values',
 }: DateInputFieldProps): JSX.Element {
   const { control } = useFormContext();
-  const { translation } = useTranslations();
+  const { translation, currentLocale } = useTranslations();
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   return (
@@ -78,7 +78,7 @@ export function DateInputField({
                   )}
                 >
                   {field.value ? (
-                    formatToDate(field.value, dateFormat)
+                    formatToDate(field.value, dateFormat, currentLocale)
                   ) : (
                     <span>
                       {translation(

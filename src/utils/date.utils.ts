@@ -1,3 +1,5 @@
+import type { Locale } from '@/config/i18n.config';
+
 export type Formats =
   | 'datetime-with-sub-values'
   | 'date'
@@ -5,12 +7,13 @@ export type Formats =
 
 export const formatToDate = (
   currentDate: string | number | Date,
-  format: Formats = 'datetime-with-sub-values'
+  format: Formats = 'datetime-with-sub-values',
+  locale: Locale
 ): string => {
   const showSubValues =
     format === 'datetime-with-sub-values' ? '2-digit' : undefined;
 
-  const dateFormatter = new Intl.DateTimeFormat('pt-br', {
+  const dateFormatter = new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     day: '2-digit',
     month: '2-digit',
