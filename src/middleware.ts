@@ -28,29 +28,29 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(
       new URL(`/${newLocale}${nextUrlPathName}`, request.url)
     );
-  } else {
-    const currentLocale = nextUrlPathName.split('/')[1] as Locale;
+  }
 
-    const pathnameWithoutLocale =
-      nextUrlPathName.replace(`/${currentLocale}`, '') || protectedRoutes[0];
+  const currentLocale = nextUrlPathName.split('/')[1] as Locale;
 
-    // Agora que o locale está garantido na URL, verifique se a rota é protegida
-    const isProtectedRoute = protectedRoutes.some(
-      (protectedRoute) =>
-        pathnameWithoutLocale === protectedRoute ||
-        pathnameWithoutLocale === `${protectedRoute}/`
-    );
+  const pathnameWithoutLocale =
+    nextUrlPathName.replace(`/${currentLocale}`, '') || protectedRoutes[0];
 
-    // Se for uma rota protegida, verificar a sessão
-    if (isProtectedRoute) {
-      const { access_token, user } = await session();
+  // Agora que o locale está garantido na URL, verifique se a rota é protegida
+  const isProtectedRoute = protectedRoutes.some(
+    (protectedRoute) =>
+      pathnameWithoutLocale === protectedRoute ||
+      pathnameWithoutLocale === `${protectedRoute}/`
+  );
 
-      // Se não houver sessão, redirecionar para a página de login com o locale correto
-      if (!access_token || !user) {
-        return NextResponse.redirect(
-          new URL(`/${currentLocale}/auth/login`, request.url)
-        );
-      }
+  // Se for uma rota protegida, verificar a sessão
+  if (isProtectedRoute) {
+    const { access_token, user } = await session();
+
+    // Se não houver sessão, redirecionar para a página de login com o locale correto
+    if (!access_token || !user) {
+      return NextResponse.redirect(
+        new URL(`/${currentLocale}/auth/login`, request.url)
+      );
     }
   }
 
