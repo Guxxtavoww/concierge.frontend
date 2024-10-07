@@ -32,3 +32,8 @@ export type LoginAndRegisterResponsePayload = z.infer<
 >;
 
 export type UserType = z.infer<typeof userSchema>;
+
+export interface RefreshActionResponse {
+  access_token: string;
+  refresh_token: string;
+}

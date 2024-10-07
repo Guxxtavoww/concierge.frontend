@@ -44,10 +44,10 @@ export default async function middleware(request: NextRequest) {
 
   // Se for uma rota protegida, verificar a sessão
   if (isProtectedRoute) {
-    const { access_token, user } = await session();
+    const { access_token, user, refresh_token } = await session();
 
     // Se não houver sessão, redirecionar para a página de login com o locale correto
-    if (!access_token || !user) {
+    if (!access_token || !user || !refresh_token) {
       return NextResponse.redirect(
         new URL(`/${currentLocale}/auth/login`, request.url)
       );
