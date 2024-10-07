@@ -11,8 +11,8 @@ import { type UserType, userSchema } from '@/server/actions/auth/auth.types';
 export async function session<
   ForceNoUndefined extends boolean = false
 >(): Promise<{
-  access_token: string | undefined;
-  refresh_token: string | undefined;
+  access_token: ForceNoUndefined extends false ? string | undefined : string;
+  refresh_token: ForceNoUndefined extends false ? string | undefined : string;
   user: ForceNoUndefined extends false ? UserType | undefined : UserType;
 }> {
   const { access_token, refresh_token, user } = await getMultipleCookies([
