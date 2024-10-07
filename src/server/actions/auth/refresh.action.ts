@@ -8,8 +8,9 @@ import {
 import { getExpirationDateFromToken } from '@/utils/get-expiration-date-from-token.util';
 
 import type { RefreshActionResponse } from './auth.types';
+import { revalidatePath } from 'next/cache';
 
-export async function refresh() {
+export async function refresh(origin: string) {
   const { refresh_token: refresh_token_cookie, user } =
     await getMultipleCookies(['refresh_token', 'user']);
 
@@ -40,4 +41,6 @@ export async function refresh() {
       expires,
     },
   ]);
+
+  return revalidatePath(origin);
 }
