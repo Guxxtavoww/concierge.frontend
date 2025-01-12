@@ -4,6 +4,12 @@ import { session } from './lib/session/session.lib';
 import { type Locale, locales } from './config/i18n.config';
 import { getMatchingLocale } from './lib/i18n/functions/get-matching-locale.lib';
 
+// Define protected routes as patterns
+// const protectedRoutePatterns = [
+//   /^\/$/, // Root route
+//   /^\/dashboard\/.+$/, // Dynamic routes like `/dashboard/[id]`
+// ];
+
 const protectedRoutes = new Set(['/']); // Rotas protegidas sem prefixo de locale
 const routesToIgnore = new Set([
   '/_next/',
