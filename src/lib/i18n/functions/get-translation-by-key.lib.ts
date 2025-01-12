@@ -1,8 +1,8 @@
 import type { Translation } from './load-translation.lib';
 
-export type TranslationKeyValue = {
+export interface TranslationKeyValue {
   [key: string]: string | TranslationKeyValue;
-};
+}
 
 /**
  * Get translation value string based on a given key and translation.
