@@ -41,6 +41,11 @@ export default async function middleware(request: NextRequest) {
   const pathnameWithoutLocale =
     pathname.replace(`/${currentLocale}`, '') || '/';
 
+  //  // Check if the route matches any protected pattern
+  //  const isProtectedRoute = protectedRoutePatterns.some((pattern) =>
+  //   pattern.test(pathnameWithoutLocale)
+  // );
+
   // Verificar se a rota é protegida
   if (protectedRoutes.has(pathnameWithoutLocale)) {
     const { access_token, user, refresh_token } = await session();
